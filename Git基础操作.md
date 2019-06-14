@@ -67,3 +67,22 @@ git reset --hard commit_id
 git pull 
 ```
 
+拉取其他分支代码
+
+```
+# 默认clone的是仓库的master分支
+git clone git@gitlab.xxx.com:xxxxx.git
+# 解决办法
+git branch -r  # 查看远程分支
+OR
+git branch -a  # 查看所有分支
+# 直接拉取
+git checkout origin/xxxx
+
+# git clone 默认会把远程仓库整个clone，但只会在本地默认创建一个master分支
+# 拉取远端分支并且在本地建立同名分支
+git checkout -t origin/xxxx
+OR
+git fetch origin xxxxx:xxxxx
+# 不过通过fetch命令来建立的本地分支不是一个track branch，而且成功之后不会自动切换到该分支上
+```
