@@ -1,5 +1,17 @@
 ## Git基础操作
 
+修改username 和 email
+
+```
+# 仅对当前仓库有效
+git config user.name 'xxxxxx'
+git config user.email 'xxxxx'
+
+# 全局修改
+git config --global user.name 'xxxxxx'
+git config --global user.email 'xxxxxx'
+```
+
 添加更改到暂存区
 
 ```
@@ -85,4 +97,44 @@ git checkout -t origin/xxxx
 OR
 git fetch origin xxxxx:xxxxx
 # 不过通过fetch命令来建立的本地分支不是一个track branch，而且成功之后不会自动切换到该分支上
+```
+
+git reset 三种用法
+```
+# 回退一个版本,且会将暂存区的内容和本地已提交的内容全部恢复到未暂存的状态,不影响原来本地文件(未提交的也 
+不受影响) 
+git reset (–mixed) HEAD~1 
+
+# 回退一个版本,不清空暂存区,将已提交的内容恢复到暂存区,不影响原来本地的文件(未提交的也不受影响) 
+git reset –soft HEAD~1 
+
+# 回退一个版本,清空暂存区,将已提交的内容的版本恢复到本地,本地的文件也将被恢复的版本替换
+git reset –hard HEAD~1
+```
+
+git版本回滚（方法一）
+
+```
+# 本地回滚
+git reset --hard commit_id  注：commit_id是目标id
+git reset --hard HEAD~3：将最近3次的提交回滚
+git reset --hard HEAD~100：将最近100次的提交回滚
+# 扩展   --hard选项表示彻底将工作区、暂存区和版本库记录恢复到指定的版本库，HEAD^表示回滚到上一个版本，HEAD^^表示回滚到上上一个版本，以此类推，如果要回滚到上100个版本，可以使用HEAD~100
+# 回滚远端分支
+git push -f orgin branch_name  注：将本地的远端分支强制push到远端仓库，覆盖
+```
+
+git版本回滚（方法二 针对强推不起作用并且是非master分支）
+
+```
+# 对本地仓库进行回滚
+git reset --hard commit_id  注：commit_id是目标id
+# 备份，删除远程分支，将本地分支回滚后的分支推送到远端
+git checkout the_branch  切换分支
+git pull
+git branch the_branch_backup   备份一下这个分支当前的情况
+git reset --hard the_commit_id   把the_branch本地回滚到the_commit_id
+git push origin :the_branch   删除远程 the_branch
+git push origin the_branch //用回滚后的本地分支重新建立远程分支
+git push origin :the_branch_backup //如果前面都成功了，删除这个备份分支
 ```
