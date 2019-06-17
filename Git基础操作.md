@@ -138,3 +138,39 @@ git push origin :the_branch   删除远程 the_branch
 git push origin the_branch //用回滚后的本地分支重新建立远程分支
 git push origin :the_branch_backup //如果前面都成功了，删除这个备份分支
 ```
+
+[Git 执行 「fork 出来的仓库」和「最新版本的原仓库」内容同步更新](https://www.cnblogs.com/huangjianwu/p/4899672.html)
+
+当我们在 GitHub 上 fork 出一个仓库后，如果原仓库更新了，此时怎样才能保证我们 fork 出来的仓库和原仓库内容一致呢？我们一般关注的是仓库的 master（主干分支）的内容，通过以下步骤来保证他最新就可以了。
+
+```
+# 添加一个远程仓库，此时只是空壳，还没有同步内容，引用 fork 的原仓库地址
+git remote add originUpstream 主仓库git地址
+# 更新远程仓库，从引用 fork 的原仓库地址同步内容，此时原仓库的 master（主干分支）已经可以在本地访问了
+git remote update originUpstream
+# checkout（检出）用于操作的本地分支 ，比如 master；
+git checkout master
+# 直接从远程仓库的分支 pull（拉取）数据
+git pull originUpstream master
+# 把本地已检出分支的已提交数据 push（推送） 到自己 fork 的仓库中
+git push origin master
+```
+
+五步git操作搞定Github中fork的项目与原作者同步
+
+```
+# git clone fork的项目到本地
+git clone fork的仓库地址
+# 进入刚才clone的文件目录下，然后增加源分支地址到你项目远程分支列表中
+git remote add 主仓库对应的分支 主仓库地址
+# fetch源分支到本地
+git fetch 更新的分支
+# 合并两个版本的代码
+git merge 更新的分支/本地的分支
+# 最后一步，把合并后的代码push到你的Github项目上去
+git push origin master
+```
+
+[GitHub上 fork别人的项目 源作者更新后如何同步更新](https://blog.csdn.net/weixin_40928253/article/details/84665971)
+
+说明：github远程实现fork仓库更新
