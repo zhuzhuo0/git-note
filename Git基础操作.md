@@ -56,9 +56,9 @@ git log
 
 ```
 # 撤销并且保留改动（推荐）
-git reset --soft commit_id
+git reset --soft commit_id 注：commit_id 是指要还原到的目标commit_id
 # 撤销且不保留改动（不推荐）
-git reset --hard commit_id
+git reset --hard commit_id 注：commit_id 是指要还原到的目标commit_id
 ```
 
 拉取最新版本
