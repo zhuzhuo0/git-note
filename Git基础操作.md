@@ -174,3 +174,41 @@ git push origin master
 [GitHub上 fork别人的项目 源作者更新后如何同步更新](https://blog.csdn.net/weixin_40928253/article/details/84665971)
 
 说明：github远程实现fork仓库更新
+
+查看本地仓库关联的远程仓库
+
+```
+# 查看当前的远程库
+# 要查看当前配置有哪些远程仓库，可以用 git remote 命令，它会列出每个远程库的简短名字。在克隆完某个项目后，至少可以看到一个名为 origin 的远程库，Git 默认使用这个名字来标识你所克隆的原始仓库
+$ git clone git://github.com/schacon/ticgit.git
+Cloning into 'ticgit'...
+remote: Reusing existing pack: 1857, done.
+remote: Total 1857 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (1857/1857), 374.35 KiB | 193.00 KiB/s, done.
+Resolving deltas: 100% (772/772), done.
+Checking connectivity... done.
+$ cd ticgit
+$ git remote
+origin
+
+# 也可以加上 -v 选项（译注：此为 --verbose 的简写，取首字母），显示对应的克隆地址：
+$ git remote -v
+origin  git://github.com/schacon/ticgit.git (fetch)
+origin  git://github.com/schacon/ticgit.git (push)
+
+# 如果有多个远程仓库，此命令将全部列出。比如在我的 Grit 项目中，可以看到：
+$ cd grit
+$ git remote -v
+bakkdoor  git://github.com/bakkdoor/grit.git
+cho45     git://github.com/cho45/grit.git
+defunkt   git://github.com/defunkt/grit.git
+koke      git://github.com/koke/grit.git
+origin    git@github.com:mojombo/grit.git
+
+# 添加远程仓库
+要添加一个新的远程仓库，可以指定一个简单的名字，以便将来引用，运行 git remote add [shortname] [url]：
+
+# 从远程仓库抓取数据
+git fetch [remote-name]
+```
+

@@ -63,5 +63,22 @@ vscode 代码提示和插件安装
 
 5. 通过命令行工具创建Flutter项目
 
-   
+  ```
+  flutter create xxxx_xxx  
+  # 注：项目名称不能是xxx-xxx的形式
+  ```
+  
+7. 使用xcode打开生成的项目，目录路径为：
+
+   ```
+   /xxxx_xxx/ios/xxx.xcodeproj 
+   ```
+
+8. 选择模拟器运行项目
+
+9. VScode相关插件安装  `Dart、Flutter、Awesome Flutter Snippets`
+
+
+
+注意：最好在项目创建完成之后，扩展项目的相应权限，在之后可能会存在常见文件以及读取文件等操作，可能会报权限不足的错误 `sudo chmod -R 777 项目文件夹`
 
