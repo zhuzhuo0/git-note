@@ -112,3 +112,110 @@
    数据库个数，默认是 16 个。
 
    
+   
+   #### Redis SHUTDOWN 出错问题解决
+   
+   启动redis之后，在停掉的时候报错，如下：
+   
+   ```
+   c80k2@ubuntu:/usr/local/redis$ bin/redis-cli shutdown
+   (error) ERR Errors trying to SHUTDOWN. Check logs.
+   ```
+   
+   需要查看日志。那日志在哪里呢？进配置文件 redis.conf 查看：
+   
+   ```
+   # Specify the log file name. Also the empty string can be used to force
+   # Redis to log on the standard output. Note that if you use standard
+   # output for logging but daemonize, logs will be sent to /dev/null
+   logfile ""
+   ```
+   
+   为了能更方便地查看日志，我们更改一下配置
+   
+   ```
+   logfile "/usr/local/redis/log/redis.log
+   ```
+   
+   保存退出后，创建对应的日志文件，并给上读写执行权限，这里直接给了0777
+   
+   ```
+   注：此时可以通过kill -9 [redis对应的进程id]
+   ```
+   
+   重启Redis，让配置生效，再次尝试关闭Redis
+   
+   ```
+   ./redis-cli shutdown
+   ```
+   
+   仍报错
+   
+   ```
+   (error) ERR Errors trying to SHUTDOWN. Check logs.
+   ```
+   
+   进入刚刚新建的日志文件查看日志
+   
+   ```
+   42661:M 30 May 10:45:15.477 # User requested shutdown...
+   42661:M 30 May 10:45:15.478 * Saving the final RDB snapshot before exiting.
+   42661:M 30 May 10:45:15.478 # Failed opening the RDB file dump.rdb (in server root dir /usr/local/redis) for saving: Permission denied
+   42661:M 30 May 10:45:15.478 # Error trying to save the DB, can't exit.
+   ```
+   
+   看到是因为保存RDB snapshot快照的时候，由于权限问题，打开失败，进而保存失败，退出失败
+   
+   进配置文件看看
+   
+   ```
+   # The working directory.
+   #
+   # The DB will be written inside this directory, with the filename specified
+   # above using the 'dbfilename' configuration directive.
+   #
+   # The Append Only File will also be created inside this directory.
+   #
+   # Note that you must specify a directory here, not a file name.
+   dir ./
+   ```
+   
+   工作目录： 数据库DB将被写入这个目录，使用上面的 'dbfilename' 配置指令的文件名。AOF将同样再这个目录下被创建。注意你必须指明一个目录，而不是文件名
+   
+   对应的dbfilename配置如下，也就是说redis的DB数据将被写入这个文件
+   
+   ```
+   # The filename where to dump the DB
+   dbfilename dump.rdb
+   ```
+   
+   可在执行redis-server的同级目录查找到 `dump.rdb` 文件。如果没有找到请沿着目录去上级目录查找
+   
+   找到 `dump.rdb` 文件之后可查看到是因为当前帐号的权限不错造成的，
+   
+   指定db文件坐在目录
+   
+   ```
+   dir /usr/local/redis/db [自定义的数据库放置文件夹]
+   ```
+   
+   然后将存放数据文件的文件夹赋予权限
+   
+   ```
+   sudo chmod -R 777 /usr/local/redis/db
+   ```
+   
+   重新启动，让配置生效，再次尝试关闭，没有报错
+   
+   ```
+   c80k2@ubuntu:/usr/local/redis$ bin/redis-server redis.conf
+   c80k2@ubuntu:/usr/local/redis$ bin/redis-cli SHUTDOWN
+   ```
+   
+   日志
+   
+   ```
+   
+   ```
+   
+   
