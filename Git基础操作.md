@@ -212,3 +212,20 @@ origin    git@github.com:mojombo/grit.git
 git fetch [remote-name]
 ```
 
+#### 问题：如何去解决fatal: refusing to merge unrelated histories
+
+```
+# 问题场景：
+# github中新建仓库，并且里面已经有代码改动，比方说已经添加了README.md文件
+# 通过第三方脚手架本地搭建了项目
+# 将默认的.git文件删除，然后与github上的仓库进行关联
+# 关联命令如下：
+git remote add origin git@git.zhuzhu.xxxxx.com
+# 关联后git pull时发现错误
+refusing to merge --allow-unrelated-histories
+# 原因如下：
+# 这是因为远程仓库已经存在代码记录了，并且那部分代码没有和本地仓库进行关联，我们可以使用如下操作允许pull未关联的远程仓库旧代码
+git pull origin master --allow-unrelated-histories
+# 之后就可以正常push代码了
+```
+
