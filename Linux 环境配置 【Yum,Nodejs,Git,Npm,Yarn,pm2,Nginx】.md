@@ -16,7 +16,7 @@ wget http://mirrors.aliyun.com/repo/Centos-7.repo
 mv CentOS-Base.repo CentOS-Base.repo.back  
 # 将下载的repo文件更名为配置文件
 mv Centos-7.repo CentOS-Base.repo
-# 依次执行一下文件
+# 依次执行一下命令
 yum clean all
 yum makecache
 yum update
@@ -64,7 +64,10 @@ vim /etc/profile
 # 在底部加上Git相关配置信息
 export PATH=/usr/local/git/bin:$PATH
 # 查看安装的git版本，校验通过，安装成功
-git version
+git --version
+
+# 注：如果验证git版本的时候，报 '-bash:/usr/bin/git:No such file or directory'，需要执行以下命令使修改的环境变量生效
+source /etc/profile
 ```
 
 ### Npm配置
@@ -80,7 +83,7 @@ npm config set registry https://registry.npm.taobao.org/
 # 下载源码包 官网安装选择环境‘备选’
 https://yarnpkg.com/latest.tar.gz
 # 解压
-tar zvxf latest.tar.gz
+tar -zvxf latest.tar.gz
 # 修改文件夹名称
 mv yarn-v1.16.0 yarn 
 # 配置环境变量，最后添加
@@ -102,7 +105,7 @@ tar -xvf pm2.tar.gz
 ln -s /root/node/lib/node_modules/pm2/bin/pm2 /usr/local/bin/pm2
 # OR
 # 或者直接全局安装
-yarn add global pm2
+yarn global add pm2
 npm install pm2 -g
 ```
 
